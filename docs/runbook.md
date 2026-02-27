@@ -58,20 +58,41 @@ docker compose down
 - Migrations live in `migrations/` and must be applied before using the API.
 - **Important:** `urls.short_code` must have a **unique index**; do not rely only on application logic.
 
-### Recommended approach: Make targets (to be added)
+### Primary (recommended): run migrations via Docker Compose
+
+We use the official `migrate/migrate` container to avoid local installation differences.
+
+**Up**
+```bash
+docker compose run --rm migrate up
+````
+
+**Down (one step)**
+
+```bash
+docker compose run --rm migrate down 1
+```
+
+**Down (all)**
+
+```bash
+docker compose run --rm migrate down -all
+```
+
+**Verify tables**
+
+```bash
+docker compose exec db psql -U postgres -d go_url_shortener -c "\dt"
+```
+
+### Optional (later): Make targets
+
+We may add Make targets for convenience:
 
 ```bash
 make migrate-up
 make migrate-down
 make migrate-status
-```
-
-### Example (conceptual)
-
-> Exact command depends on how you wire `migrate` into the project.
-
-```bash
-migrate -path ./migrations -database "$DATABASE_URL" up
 ```
 
 ---

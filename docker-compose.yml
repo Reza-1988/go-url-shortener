@@ -28,5 +28,21 @@ services:
       - "${APP_PORT:-8080}:${APP_PORT:-8080}"
     command: ["go", "run", "./cmd/server"]
 
+  migrate:
+    image: migrate/migrate:v4.17.0
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./migrations:/migrations:ro
+    entrypoint:
+      [
+        "migrate",
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://postgres:postgres@db:5432/go_url_shortener?sslmode=disable"
+      ]
+
 volumes:
   pgdata:
