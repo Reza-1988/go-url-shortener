@@ -31,21 +31,27 @@ Create `.env` from `.env.example`:
 
 ## Run with Docker (recommended)
 
-### 1) Create env
+1) Create local env file:
 ```bash
 cp .env.example .env
-```
+````
 
-### 2) Start services
+2) Start services:
+
 ```bash
 docker compose up --build
 ```
 
-**Expected**
-- app listens on `APP_PORT`
-- postgres is available via `DATABASE_URL`
+3) Stop services:
 
----
+```bash
+docker compose down
+```
+
+> Notes:
+>
+> * `.env` must NOT be committed (only `.env.example` is tracked).
+> * DB runs on a persistent Docker volume.
 
 ## Database migrations (golang-migrate)
 
